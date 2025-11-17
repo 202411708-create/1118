@@ -12,13 +12,14 @@ import scenesData from '../data/scenes.json';
 import './GameCanvas.css';
 
 const GameCanvas = () => {
+  const currentScene = useGameStore((state) => state.currentScene); // 선택적 구독
   const gameState = useGameStore();
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
   const [keys, setKeys] = useState({});
   const animationFrameRef = useRef(null);
   const lastTimeRef = useRef(Date.now());
 
-  const currentSceneData = scenesData[gameState.currentScene];
+  const currentSceneData = scenesData[currentScene];
 
   // 키보드 입력 처리
   useEffect(() => {
@@ -75,23 +76,34 @@ const GameCanvas = () => {
 
   // 씬 로드 시 환경 설정
   useEffect(() => {
+    console.log('=== 씬 로드 useEffect 실행 ===');
+    console.log('currentScene:', currentScene);
+
     if (currentSceneData) {
-      console.log('=== 씬 로드 ===');
       console.log('씬 ID:', currentSceneData.id);
-      console.log('씬 noiseSources:', currentSceneData.noiseSources);
-      console.log('소음원 개수:', currentSceneData.noiseSources?.length || 0);
+      console.log('JSON의 소음원 개수:', currentSceneData.noiseSources?.length || 0);
+      console.log('JSON의 소음원 목록:', JSON.stringify(currentSceneData.noiseSources, null, 2));
+
+      const newNoiseSources = currentSceneData.noiseSources || [];
+      console.log('설정할 소음원 개수:', newNoiseSources.length);
 
       gameState.updateEnvironment({
         floor: currentSceneData.floor,
         noiseLevel: currentSceneData.environment.noiseLevel,
         lightIntensity: currentSceneData.environment.lightIntensity,
         crowdDensity: currentSceneData.environment.crowdDensity,
-        noiseSources: currentSceneData.noiseSources || []
+        noiseSources: newNoiseSources
       });
+
+      // 즉시 확인 (동기적으로는 안 바뀔 수 있음)
+      setTimeout(() => {
+        console.log('업데이트 후 state의 소음원 개수:', useGameStore.getState().environment.noiseSources.length);
+        console.log('업데이트 후 state의 소음원:', JSON.stringify(useGameStore.getState().environment.noiseSources, null, 2));
+      }, 100);
 
       setCurrentDialogueIndex(0);
     }
-  }, [gameState.currentScene]);
+  }, [currentScene]); // dependency를 currentScene만으로 변경
 
   const updateMovement = (deltaTime) => {
     const speed = 150; // pixels per second
