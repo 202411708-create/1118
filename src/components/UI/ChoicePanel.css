@@ -1,0 +1,57 @@
+.choice-panel {
+  position: fixed;
+  bottom: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 400px;
+}
+
+.choice-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  text-align: center;
+}
+
+.choice-button:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.choice-button:active:not(.disabled) {
+  transform: translateY(0);
+}
+
+.choice-button.disabled {
+  background: linear-gradient(135deg, #4a5568 0%, #6b7280 100%);
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .choice-container {
+    min-width: 90%;
+  }
+
+  .choice-button {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
+}

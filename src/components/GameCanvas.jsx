@@ -6,6 +6,7 @@ import Byeol from './Character/Byeol';
 import HandHolding from './Character/HandHolding';
 import StabilityMeter from './UI/StabilityMeter';
 import DialogueBox from './UI/DialogueBox';
+import ChoicePanel from './UI/ChoicePanel';
 import NoiseSource from './Environment/NoiseSource';
 import scenesData from '../data/scenes.json';
 import './GameCanvas.css';
@@ -129,7 +130,20 @@ const GameCanvas = () => {
         setCurrentDialogueIndex(currentDialogueIndex + 1);
       } else {
         setCurrentDialogueIndex(-1); // 대화 종료
+
+        // 대화가 끝나고 선택지가 없으면 자동으로 다음 씬으로
+        if (!currentSceneData.choices && currentSceneData.nextScene) {
+          setTimeout(() => {
+            gameState.changeScene(currentSceneData.nextScene);
+          }, 1000);
+        }
       }
+    }
+  };
+
+  const handleChoice = (choice) => {
+    if (choice.nextScene) {
+      gameState.changeScene(choice.nextScene);
     }
   };
 
@@ -153,13 +167,13 @@ const GameCanvas = () => {
     let backgroundColor;
 
     if (floor < 0) {
-      backgroundColor = '#1a1a2e'; // 어두운 지하
+      backgroundColor = '#3a3a52'; // 밝게 조정한 지하
     } else if (floor < 50) {
-      backgroundColor = '#2d3748'; // 하층
+      backgroundColor = '#4a5568'; // 하층
     } else if (floor < 100) {
-      backgroundColor = '#4a5568'; // 중층
+      backgroundColor = '#5a6778'; // 중층
     } else {
-      backgroundColor = '#0f1419'; // 마천루 (밤하늘)
+      backgroundColor = '#1a2332'; // 마천루 (밤하늘)
     }
 
     // 별이 시점에서는 색상 과포화
@@ -223,6 +237,14 @@ const GameCanvas = () => {
           dialogue={currentSceneData.dialogues[currentDialogueIndex]}
           onComplete={handleDialogueComplete}
           viewpoint={gameState.viewpoint}
+        />
+      )}
+
+      {/* 선택지 */}
+      {currentDialogueIndex === -1 && currentSceneData?.choices && (
+        <ChoicePanel
+          choices={currentSceneData.choices}
+          onChoice={handleChoice}
         />
       )}
 

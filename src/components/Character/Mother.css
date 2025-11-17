@@ -4,6 +4,7 @@
   height: 60px;
   transition: left 0.1s linear, top 0.1s linear;
   z-index: 10;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 .character-sprite {
@@ -16,22 +17,24 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: #d4a574;
+  background-color: #e8c4a0;
   border-radius: 50%;
   top: 0;
   left: 10px;
   border: 2px solid #333;
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .character.mother .body {
   position: absolute;
   width: 24px;
   height: 28px;
-  background-color: #4a5568;
+  background-color: #5a6a88;
   top: 18px;
   left: 8px;
   border-radius: 4px;
   border: 2px solid #333;
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .character.mother .arm-left,
