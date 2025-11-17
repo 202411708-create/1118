@@ -1,0 +1,221 @@
+{
+  "0-1": {
+    "id": "0-1",
+    "chapter": 0,
+    "title": "격리 통지 도착",
+    "floor": -5,
+    "viewpoint": "mother",
+    "backgroundMusic": "ambient-tense",
+    "environment": {
+      "noiseLevel": 20,
+      "lightIntensity": 40,
+      "crowdDensity": 0
+    },
+    "dialogues": [
+      {
+        "speaker": "system",
+        "text": "천층시 복지부입니다. 등록 시민 '별이'에 대한 적응 시설 배치가 결정되었습니다...",
+        "type": "hologram"
+      },
+      {
+        "speaker": "mother",
+        "text": "아니. 절대 보내지 않아.",
+        "type": "narration",
+        "emotion": "determined"
+      }
+    ],
+    "choices": [
+      {
+        "id": "accept-notice",
+        "text": "[공문 수락]",
+        "disabled": true
+      },
+      {
+        "id": "ignore-notice",
+        "text": "[공문 무시]",
+        "nextScene": "1-1"
+      }
+    ]
+  },
+  "1-1": {
+    "id": "1-1",
+    "chapter": 1,
+    "title": "탈출 시작",
+    "floor": -5,
+    "viewpoint": "mother",
+    "backgroundMusic": "tension-rising",
+    "environment": {
+      "noiseLevel": 30,
+      "lightIntensity": 35,
+      "crowdDensity": 0
+    },
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "별아, 엄마 손 잡아. 우리 위로 올라가야 해.",
+        "type": "dialogue",
+        "emotion": "gentle-firm"
+      }
+    ],
+    "tutorial": {
+      "type": "movement",
+      "message": "방향키로 이동하세요"
+    },
+    "nextScene": "1-2"
+  },
+  "1-2": {
+    "id": "1-2",
+    "chapter": 1,
+    "title": "소음 지대 (Tutorial)",
+    "floor": -2,
+    "viewpoint": "mother",
+    "backgroundMusic": "industrial-harsh",
+    "environment": {
+      "noiseLevel": 80,
+      "lightIntensity": 60,
+      "crowdDensity": 0
+    },
+    "noiseSources": [
+      {
+        "id": "machine-1",
+        "x": 300,
+        "y": 200,
+        "type": "기계1",
+        "intensity": 70,
+        "active": true
+      },
+      {
+        "id": "ventilator",
+        "x": 500,
+        "y": 150,
+        "type": "환풍기",
+        "intensity": 60,
+        "active": true
+      },
+      {
+        "id": "conveyor",
+        "x": 700,
+        "y": 300,
+        "type": "컨베이어",
+        "intensity": 80,
+        "active": true
+      }
+    ],
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "별이가... 힘들어하고 있어. 소음원을 찾아서 꺼야 해.",
+        "type": "narration",
+        "emotion": "worried"
+      }
+    ],
+    "tutorial": {
+      "steps": [
+        {
+          "type": "hand-holding",
+          "message": "별이의 손을 잡으세요 (스페이스바)",
+          "completed": false
+        },
+        {
+          "type": "noise-removal",
+          "message": "소음원을 찾아 비활성화하세요 (클릭)",
+          "completed": false
+        },
+        {
+          "type": "pattern-hint",
+          "message": "별이를 잠시 놓으면, 별이가 뭔가를 발견할 수도...",
+          "completed": false
+        }
+      ]
+    },
+    "nextScene": "2-1"
+  },
+  "4-climax": {
+    "id": "4-climax",
+    "chapter": 4,
+    "title": "마천루 도착",
+    "floor": 115,
+    "viewpoint": "mother",
+    "backgroundMusic": "emotional-culmination",
+    "environment": {
+      "noiseLevel": 0,
+      "lightIntensity": 30,
+      "crowdDensity": 0,
+      "special": "night-sky-stars"
+    },
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "별아... 우리 해냈어.",
+        "type": "dialogue",
+        "emotion": "relieved"
+      },
+      {
+        "speaker": "mother",
+        "text": "엄마는 네가 이 별들을 보면서, 엄마가 너에게 얼마나 많은 것을 배웠는지 알았으면 좋겠어.",
+        "type": "dialogue",
+        "emotion": "loving"
+      },
+      {
+        "speaker": "mother",
+        "text": "네가 세상을 보는 방식은 틀린 게 아니야. 그냥 다른 거야.",
+        "type": "dialogue",
+        "emotion": "loving"
+      }
+    ],
+    "viewpointSwitch": {
+      "to": "byeol",
+      "afterDialogue": true
+    },
+    "nextScene": "4-climax-byeol"
+  },
+  "4-climax-byeol": {
+    "id": "4-climax-byeol",
+    "chapter": 4,
+    "title": "마천루 도착 (별이 시점)",
+    "floor": 115,
+    "viewpoint": "byeol",
+    "backgroundMusic": "emotional-culmination",
+    "environment": {
+      "noiseLevel": 0,
+      "lightIntensity": 30,
+      "crowdDensity": 0,
+      "special": "night-sky-stars-pattern"
+    },
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "▓▓▒ ▓▓▓, ▒▓. ▓▓▒▓ ▒▒▓▓▒?",
+        "type": "distorted",
+        "originalEmotion": "loving"
+      },
+      {
+        "speaker": "byeol",
+        "text": "소리가 들려요. 엄마 목소리예요.",
+        "type": "narration"
+      },
+      {
+        "speaker": "byeol",
+        "text": "무슨 말인지는 모르겠어요.",
+        "type": "narration"
+      },
+      {
+        "speaker": "byeol",
+        "text": "괜찮아요. 엄마는 항상 내 손을 잡아줬으니까.",
+        "type": "narration"
+      },
+      {
+        "speaker": "byeol",
+        "text": "엄마는 내가 좋아하는 패턴들을 보여줬으니까.",
+        "type": "narration"
+      },
+      {
+        "speaker": "byeol",
+        "text": "별들이 이렇게 많아요. 예쁜 패턴이에요.",
+        "type": "narration"
+      }
+    ],
+    "finalMessage": "소통은 이해와 같지 않다",
+    "credits": true
+  }
+}

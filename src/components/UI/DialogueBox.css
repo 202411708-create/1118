@@ -1,0 +1,135 @@
+.dialogue-box {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 500px;
+  max-width: 700px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 20px 30px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dialogue-box:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dialogue-speaker {
+  color: #fbbf24;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dialogue-text {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 24px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dialogue-continue {
+  display: inline-block;
+  margin-left: 10px;
+  animation: blink 1s ease-in-out infinite;
+  color: #fbbf24;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* 내레이션 스타일 */
+.dialogue-box.narration {
+  background: rgba(20, 20, 30, 0.9);
+  border-color: rgba(100, 100, 120, 0.3);
+}
+
+.dialogue-box.narration .dialogue-text {
+  font-style: italic;
+  color: #d1d5db;
+}
+
+/* 시스템 메시지 */
+.dialogue-box.speaker-system {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.dialogue-box.speaker-system .dialogue-speaker {
+  color: #60a5fa;
+}
+
+/* 왜곡된 음성 (별이 시점에서의 어머니 목소리) */
+.dialogue-text.distorted {
+  font-family: 'Courier New', monospace;
+  color: #9ca3af;
+  letter-spacing: 3px;
+  text-shadow:
+    0 0 5px rgba(156, 163, 175, 0.5),
+    0 0 10px rgba(156, 163, 175, 0.3);
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  33% {
+    transform: translateX(-2px);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateX(2px);
+    opacity: 0.9;
+  }
+}
+
+/* 홀로그램 스타일 */
+.dialogue-box.hologram {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow:
+    0 0 20px rgba(59, 130, 246, 0.3),
+    inset 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+.dialogue-box.hologram .dialogue-text {
+  color: #60a5fa;
+  animation: hologram-flicker 0.15s infinite;
+}
+
+@keyframes hologram-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+/* 별이 시점 스타일 */
+.dialogue-box.viewpoint-byeol:not(.speaker-byeol) {
+  filter: saturate(0.8) brightness(0.9);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .dialogue-box {
+    min-width: 90%;
+    max-width: 90%;
+    padding: 15px 20px;
+  }
+
+  .dialogue-text {
+    font-size: 14px;
+  }
+}
