@@ -148,16 +148,19 @@ const GameCanvas = () => {
   };
 
   const handleNoiseDeactivate = (sourceId) => {
+    // 제거하기 전에 남은 소음원 수를 계산
+    const remainingAfterRemoval = gameState.environment.noiseSources.filter(s => s.id !== sourceId);
+
+    // 소음원 제거
     gameState.removeNoiseSource(sourceId);
 
     // 모든 소음원이 제거되었는지 확인
-    const remainingSources = gameState.environment.noiseSources.filter(s => s.active && s.id !== sourceId);
-    if (remainingSources.length === 0) {
+    if (remainingAfterRemoval.length === 0) {
       // 다음 씬으로 이동
-      if (currentSceneData.nextScene) {
+      if (currentSceneData?.nextScene) {
         setTimeout(() => {
           gameState.changeScene(currentSceneData.nextScene);
-        }, 1000);
+        }, 1500);
       }
     }
   };

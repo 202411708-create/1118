@@ -38,10 +38,14 @@
 }
 
 .choice-button.disabled {
-  background: linear-gradient(135deg, #4a5568 0%, #6b7280 100%);
-  opacity: 0.5;
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none;
+  text-decoration: line-through;
+  color: #9ca3af;
+  border-color: rgba(255, 255, 255, 0.1);
+  filter: grayscale(1);
 }
 
 /* 반응형 */
