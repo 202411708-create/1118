@@ -76,6 +76,11 @@ const GameCanvas = () => {
   // 씬 로드 시 환경 설정
   useEffect(() => {
     if (currentSceneData) {
+      console.log('=== 씬 로드 ===');
+      console.log('씬 ID:', currentSceneData.id);
+      console.log('씬 noiseSources:', currentSceneData.noiseSources);
+      console.log('소음원 개수:', currentSceneData.noiseSources?.length || 0);
+
       gameState.updateEnvironment({
         floor: currentSceneData.floor,
         noiseLevel: currentSceneData.environment.noiseLevel,
@@ -148,20 +153,29 @@ const GameCanvas = () => {
   };
 
   const handleNoiseDeactivate = (sourceId) => {
+    console.log('=== 소음원 제거 디버깅 ===');
+    console.log('제거할 소음원 ID:', sourceId);
+    console.log('현재 소음원 목록:', gameState.environment.noiseSources);
+    console.log('소음원 개수:', gameState.environment.noiseSources.length);
+
     // 제거하기 전에 남은 소음원 수를 계산
     const remainingAfterRemoval = gameState.environment.noiseSources.filter(s => s.id !== sourceId);
+    console.log('제거 후 남을 소음원 개수:', remainingAfterRemoval.length);
 
     // 소음원 제거
     gameState.removeNoiseSource(sourceId);
 
     // 모든 소음원이 제거되었는지 확인
     if (remainingAfterRemoval.length === 0) {
+      console.log('모든 소음원 제거 완료! 다음 씬으로 이동');
       // 다음 씬으로 이동
       if (currentSceneData?.nextScene) {
         setTimeout(() => {
           gameState.changeScene(currentSceneData.nextScene);
         }, 1500);
       }
+    } else {
+      console.log('아직 소음원이 남아있습니다:', remainingAfterRemoval.length, '개');
     }
   };
 
