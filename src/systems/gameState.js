@@ -12,15 +12,13 @@ const useGameStore = create(
     characters: {
       mother: {
         position: { x: 100, y: 300 },
-        emotion: "determined",
-        velocity: { x: 0, y: 0 }
+        emotion: "determined"
       },
       byeol: {
         position: { x: 120, y: 300 },
-        stabilityLevel: 100, // 0-100
+        stabilityLevel: 100,
         sensoryOverload: false,
-        observedPatterns: [],
-        velocity: { x: 0, y: 0 }
+        observedPatterns: []
       }
     },
 
@@ -41,19 +39,6 @@ const useGameStore = create(
       completedScenes: [],
       unlockedMechanics: ["handHolding"],
       discoveredPatterns: []
-    },
-
-    // 게임 설정
-    settings: {
-      colorBlindMode: false,
-      textSize: "medium",
-      highContrast: false,
-      subtitles: true,
-      visualSoundCues: true,
-      audioDescriptions: false,
-      autoProgress: false,
-      simplifiedControls: false,
-      pauseAnytime: true
     },
 
     // Actions
@@ -135,13 +120,6 @@ const useGameStore = create(
       }
     })),
 
-    updateSettings: (newSettings) => set((state) => ({
-      settings: {
-        ...state.settings,
-        ...newSettings
-      }
-    })),
-
     resetGame: () => set({
       currentChapter: 0,
       currentScene: "0-1",
@@ -149,15 +127,13 @@ const useGameStore = create(
       characters: {
         mother: {
           position: { x: 100, y: 300 },
-          emotion: "determined",
-          velocity: { x: 0, y: 0 }
+          emotion: "determined"
         },
         byeol: {
           position: { x: 120, y: 300 },
           stabilityLevel: 100,
           sensoryOverload: false,
-          observedPatterns: [],
-          velocity: { x: 0, y: 0 }
+          observedPatterns: []
         }
       },
       isHoldingHands: true,

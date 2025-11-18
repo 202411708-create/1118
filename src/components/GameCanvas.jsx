@@ -9,13 +9,14 @@ import DialogueBox from './UI/DialogueBox';
 import ChoicePanel from './UI/ChoicePanel';
 import NoiseSource from './Environment/NoiseSource';
 import scenesData from '../data/scenes.json';
+import { debug } from '../utils/debug';
 import './GameCanvas.css';
 
 const GameCanvas = () => {
-  const currentScene = useGameStore((state) => state.currentScene); // 선택적 구독
+  const currentScene = useGameStore((state) => state.currentScene);
   const gameState = useGameStore();
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
-  const [keys, setKeys] = useState({});
+  const keysRef = useRef({}); // state → ref
   const animationFrameRef = useRef(null);
   const lastTimeRef = useRef(Date.now());
 
@@ -24,17 +25,17 @@ const GameCanvas = () => {
   // 키보드 입력 처리
   useEffect(() => {
     const handleKeyDown = (e) => {
-      setKeys((prev) => ({ ...prev, [e.key]: true }));
+      keysRef.current[e.key] = true; // ref 사용
 
       // 스페이스바로 손잡기 토글
       if (e.key === ' ') {
         e.preventDefault();
-        gameState.toggleHandHolding();
+        useGameStore.getState().toggleHandHolding(); // getState() 사용
       }
     };
 
     const handleKeyUp = (e) => {
-      setKeys((prev) => ({ ...prev, [e.key]: false }));
+      keysRef.current[e.key] = false; // ref 사용
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -44,7 +45,7 @@ const GameCanvas = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [gameState]);
+  }, []); // 빈 의존성
 
   // 게임 루프
   useEffect(() => {
@@ -53,13 +54,48 @@ const GameCanvas = () => {
       const deltaTime = (now - lastTimeRef.current) / 1000;
       lastTimeRef.current = now;
 
+      const state = useGameStore.getState(); // 최신 상태
+      const keys = keysRef.current; // ref에서 가져오기
+
       // 캐릭터 이동
-      updateMovement(deltaTime);
+      const speed = 150;
+      const motherPos = { ...state.characters.mother.position };
+      let moved = false;
+
+      if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+        motherPos.x -= speed * deltaTime;
+        moved = true;
+      }
+      if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+        motherPos.x += speed * deltaTime;
+        moved = true;
+      }
+      if (keys['ArrowUp'] || keys['w'] || keys['W']) {
+        motherPos.y -= speed * deltaTime;
+        moved = true;
+      }
+      if (keys['ArrowDown'] || keys['s'] || keys['S']) {
+        motherPos.y += speed * deltaTime;
+        moved = true;
+      }
+
+      if (moved) {
+        state.updateMotherPosition(motherPos);
+
+        // 손을 잡고 있으면 별이도 따라옴
+        if (state.isHoldingHands) {
+          const byeolPos = {
+            x: motherPos.x + 20,
+            y: motherPos.y
+          };
+          state.updateByeolPosition(byeolPos);
+        }
+      }
 
       // 안정도 업데이트
-      const stabilityUpdate = updateStability(gameState, deltaTime);
-      if (stabilityUpdate.stabilityLevel !== gameState.characters.byeol.stabilityLevel) {
-        gameState.updateStabilityLevel(stabilityUpdate.stabilityLevel);
+      const stabilityUpdate = updateStability(state, deltaTime);
+      if (stabilityUpdate.stabilityLevel !== state.characters.byeol.stabilityLevel) {
+        state.updateStabilityLevel(stabilityUpdate.stabilityLevel);
       }
 
       animationFrameRef.current = requestAnimationFrame(gameLoop);
@@ -72,20 +108,15 @@ const GameCanvas = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [gameState, keys]);
+  }, []); // 빈 의존성 - 한 번만 실행
 
   // 씬 로드 시 환경 설정
   useEffect(() => {
-    console.log('=== 씬 로드 useEffect 실행 ===');
-    console.log('currentScene:', currentScene);
+    debug.log('씬 로드:', currentScene);
 
     if (currentSceneData) {
-      console.log('씬 ID:', currentSceneData.id);
-      console.log('JSON의 소음원 개수:', currentSceneData.noiseSources?.length || 0);
-      console.log('JSON의 소음원 목록:', JSON.stringify(currentSceneData.noiseSources, null, 2));
-
       const newNoiseSources = currentSceneData.noiseSources || [];
-      console.log('설정할 소음원 개수:', newNoiseSources.length);
+      debug.log(`소음원 ${newNoiseSources.length}개 로드`);
 
       gameState.updateEnvironment({
         floor: currentSceneData.floor,
@@ -95,51 +126,9 @@ const GameCanvas = () => {
         noiseSources: newNoiseSources
       });
 
-      // 즉시 확인 (동기적으로는 안 바뀔 수 있음)
-      setTimeout(() => {
-        console.log('업데이트 후 state의 소음원 개수:', useGameStore.getState().environment.noiseSources.length);
-        console.log('업데이트 후 state의 소음원:', JSON.stringify(useGameStore.getState().environment.noiseSources, null, 2));
-      }, 100);
-
       setCurrentDialogueIndex(0);
     }
-  }, [currentScene]); // dependency를 currentScene만으로 변경
-
-  const updateMovement = (deltaTime) => {
-    const speed = 150; // pixels per second
-    const motherPos = { ...gameState.characters.mother.position };
-    const byeolPos = { ...gameState.characters.byeol.position };
-
-    let moved = false;
-
-    if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-      motherPos.x -= speed * deltaTime;
-      moved = true;
-    }
-    if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-      motherPos.x += speed * deltaTime;
-      moved = true;
-    }
-    if (keys['ArrowUp'] || keys['w'] || keys['W']) {
-      motherPos.y -= speed * deltaTime;
-      moved = true;
-    }
-    if (keys['ArrowDown'] || keys['s'] || keys['S']) {
-      motherPos.y += speed * deltaTime;
-      moved = true;
-    }
-
-    if (moved) {
-      gameState.updateMotherPosition(motherPos);
-
-      // 손을 잡고 있으면 별이도 따라옴
-      if (gameState.isHoldingHands) {
-        byeolPos.x = motherPos.x + 20;
-        byeolPos.y = motherPos.y;
-        gameState.updateByeolPosition(byeolPos);
-      }
-    }
-  };
+  }, [currentScene]);
 
   const handleDialogueComplete = () => {
     if (currentSceneData && currentSceneData.dialogues) {
@@ -165,29 +154,18 @@ const GameCanvas = () => {
   };
 
   const handleNoiseDeactivate = (sourceId) => {
-    console.log('=== 소음원 제거 디버깅 ===');
-    console.log('제거할 소음원 ID:', sourceId);
-    console.log('현재 소음원 목록:', gameState.environment.noiseSources);
-    console.log('소음원 개수:', gameState.environment.noiseSources.length);
-
-    // 제거하기 전에 남은 소음원 수를 계산
     const remainingAfterRemoval = gameState.environment.noiseSources.filter(s => s.id !== sourceId);
-    console.log('제거 후 남을 소음원 개수:', remainingAfterRemoval.length);
+    debug.log(`소음원 제거: ${sourceId}, 남은 개수: ${remainingAfterRemoval.length}`);
 
-    // 소음원 제거
     gameState.removeNoiseSource(sourceId);
 
-    // 모든 소음원이 제거되었는지 확인
     if (remainingAfterRemoval.length === 0) {
-      console.log('모든 소음원 제거 완료! 다음 씬으로 이동');
-      // 다음 씬으로 이동
+      debug.log('모든 소음원 제거 완료! 다음 씬으로 이동');
       if (currentSceneData?.nextScene) {
         setTimeout(() => {
           gameState.changeScene(currentSceneData.nextScene);
         }, 1500);
       }
-    } else {
-      console.log('아직 소음원이 남아있습니다:', remainingAfterRemoval.length, '개');
     }
   };
 
