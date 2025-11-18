@@ -23,6 +23,30 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.viewpoint-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #a78bfa;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(167, 139, 250, 0.3);
+  z-index: 1000;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+}
+
+/* 별이 시점일 때 강조 */
+.game-canvas[data-viewpoint="byeol"] .viewpoint-indicator {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
+}
+
 .scene-title {
   position: fixed;
   top: 50%;

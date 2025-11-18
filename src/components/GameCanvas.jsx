@@ -126,6 +126,12 @@ const GameCanvas = () => {
         noiseSources: newNoiseSources
       });
 
+      // 씬의 viewpoint 설정 적용
+      if (currentSceneData.viewpoint && currentSceneData.viewpoint !== gameState.viewpoint) {
+        debug.log(`시점 전환: ${gameState.viewpoint} → ${currentSceneData.viewpoint}`);
+        gameState.switchViewpoint(currentSceneData.viewpoint);
+      }
+
       setCurrentDialogueIndex(0);
     }
   }, [currentScene]);
@@ -136,6 +142,15 @@ const GameCanvas = () => {
         setCurrentDialogueIndex(currentDialogueIndex + 1);
       } else {
         setCurrentDialogueIndex(-1); // 대화 종료
+
+        // 대화가 끝난 후 시점 전환 처리
+        if (currentSceneData.viewpointSwitch && currentSceneData.viewpointSwitch.afterDialogue) {
+          const newViewpoint = currentSceneData.viewpointSwitch.to;
+          debug.log(`대화 종료 후 시점 전환: ${gameState.viewpoint} → ${newViewpoint}`);
+          setTimeout(() => {
+            gameState.switchViewpoint(newViewpoint);
+          }, 500);
+        }
 
         // 대화가 끝나고 선택지가 없으면 자동으로 다음 씬으로
         if (!currentSceneData.choices && currentSceneData.nextScene) {
@@ -183,22 +198,46 @@ const GameCanvas = () => {
       backgroundColor = '#1a2332'; // 마천루 (밤하늘)
     }
 
-    // 별이 시점에서는 색상 과포화
-    if (gameState.viewpoint === 'byeol' && gameState.characters.byeol.sensoryOverload) {
-      return {
-        backgroundColor,
-        filter: 'saturate(150%) contrast(120%)'
-      };
+    // 별이 시점에서는 다른 시각 처리
+    if (gameState.viewpoint === 'byeol') {
+      if (gameState.characters.byeol.sensoryOverload) {
+        // 감각 과부하: 과포화 + 높은 대비
+        return {
+          backgroundColor,
+          filter: 'saturate(150%) contrast(120%) brightness(1.1)',
+          transition: 'filter 0.5s ease'
+        };
+      } else {
+        // 평온한 상태: 약간의 색상 강조 (패턴 인식을 위해)
+        return {
+          backgroundColor,
+          filter: 'saturate(120%) brightness(1.05)',
+          transition: 'filter 0.5s ease'
+        };
+      }
     }
 
-    return { backgroundColor };
+    return {
+      backgroundColor,
+      transition: 'background-color 0.5s ease'
+    };
   };
 
   return (
-    <div className="game-canvas" style={getBackgroundStyle()}>
+    <div
+      className="game-canvas"
+      style={getBackgroundStyle()}
+      data-viewpoint={gameState.viewpoint}
+      data-special={currentSceneData?.environment?.special}
+    >
       {/* 바닥 층수 표시 */}
       <div className="floor-indicator">
         {currentSceneData?.floor}층
+      </div>
+
+      {/* 시점 표시 */}
+      <div className="viewpoint-indicator">
+        {gameState.viewpoint === 'mother' ? '어머니 시점' : '별이 시점'}
       </div>
 
       {/* 캐릭터들 */}
