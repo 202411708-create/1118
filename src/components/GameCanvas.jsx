@@ -7,7 +7,9 @@ import HandHolding from './Character/HandHolding';
 import StabilityMeter from './UI/StabilityMeter';
 import DialogueBox from './UI/DialogueBox';
 import ChoicePanel from './UI/ChoicePanel';
+import PatternCollection from './UI/PatternCollection';
 import NoiseSource from './Environment/NoiseSource';
+import Pattern from './Environment/Pattern';
 import scenesData from '../data/scenes.json';
 import { debug } from '../utils/debug';
 import './GameCanvas.css';
@@ -271,11 +273,22 @@ const GameCanvas = () => {
         />
       ))}
 
+      {/* 패턴들 */}
+      {currentSceneData?.patterns?.map((pattern) => (
+        <Pattern
+          key={pattern.id}
+          pattern={pattern}
+        />
+      ))}
+
       {/* UI */}
       <StabilityMeter
         stabilityLevel={gameState.characters.byeol.stabilityLevel}
         visible={true}
       />
+
+      {/* 패턴 수집 목록 */}
+      <PatternCollection />
 
       {/* 대화창 */}
       {currentDialogueIndex >= 0 && currentSceneData?.dialogues?.[currentDialogueIndex] && (

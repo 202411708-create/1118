@@ -101,6 +101,22 @@
         "active": true
       }
     ],
+    "patterns": [
+      {
+        "id": "pattern-1-2-geo",
+        "x": 400,
+        "y": 250,
+        "type": "geometric",
+        "description": "기계의 반복 패턴"
+      },
+      {
+        "id": "pattern-1-2-wave",
+        "x": 600,
+        "y": 350,
+        "type": "wave",
+        "description": "환풍기의 파동"
+      }
+    ],
     "dialogues": [
       {
         "speaker": "mother",
@@ -182,6 +198,29 @@
       "crowdDensity": 0,
       "special": "night-sky-stars-pattern"
     },
+    "patterns": [
+      {
+        "id": "pattern-star-1",
+        "x": 200,
+        "y": 150,
+        "type": "star",
+        "description": "반짝이는 별의 패턴"
+      },
+      {
+        "id": "pattern-star-2",
+        "x": 500,
+        "y": 200,
+        "type": "star",
+        "description": "별자리의 연결"
+      },
+      {
+        "id": "pattern-star-3",
+        "x": 700,
+        "y": 180,
+        "type": "star",
+        "description": "밤하늘의 리듬"
+      }
+    ],
     "dialogues": [
       {
         "speaker": "mother",

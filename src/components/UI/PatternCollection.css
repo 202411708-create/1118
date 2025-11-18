@@ -1,0 +1,156 @@
+.pattern-collection {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(167, 139, 250, 0.4);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  max-width: 300px;
+}
+
+.pattern-collection-header {
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.pattern-collection-header:hover {
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.pattern-count {
+  color: #a78bfa;
+  font-size: 14px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+}
+
+.expand-icon {
+  color: #a78bfa;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.pattern-collection.expanded .expand-icon {
+  transform: rotate(180deg);
+}
+
+.pattern-collection-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border-top: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.pattern-collection-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pattern-collection-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.pattern-collection-list::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.5);
+  border-radius: 3px;
+}
+
+.pattern-collection-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(167, 139, 250, 0.7);
+}
+
+.pattern-empty {
+  padding: 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.pattern-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  margin: 5px 0;
+  background: rgba(167, 139, 250, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  transition: all 0.2s ease;
+  animation: pattern-item-appear 0.3s ease-out;
+}
+
+@keyframes pattern-item-appear {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pattern-item:hover {
+  background: rgba(167, 139, 250, 0.15);
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateX(-3px);
+}
+
+.pattern-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+.pattern-icon.type-geometric {
+  color: #60a5fa;
+}
+
+.pattern-icon.type-star {
+  color: #fbbf24;
+}
+
+.pattern-icon.type-wave {
+  color: #34d399;
+}
+
+.pattern-description {
+  color: #e5e7eb;
+  font-size: 13px;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .pattern-collection {
+    bottom: 10px;
+    right: 10px;
+    max-width: 250px;
+  }
+
+  .pattern-collection-header {
+    padding: 10px 15px;
+  }
+
+  .pattern-count {
+    font-size: 12px;
+  }
+
+  .pattern-description {
+    font-size: 11px;
+  }
+}
