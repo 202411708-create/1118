@@ -8,6 +8,7 @@ import StabilityMeter from './UI/StabilityMeter';
 import DialogueBox from './UI/DialogueBox';
 import ChoicePanel from './UI/ChoicePanel';
 import PatternCollection from './UI/PatternCollection';
+import Credits from './UI/Credits';
 import NoiseSource from './Environment/NoiseSource';
 import Pattern from './Environment/Pattern';
 import scenesData from '../data/scenes.json';
@@ -18,6 +19,8 @@ const GameCanvas = () => {
   const currentScene = useGameStore((state) => state.currentScene);
   const gameState = useGameStore();
   const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
   const keysRef = useRef({}); // state → ref
   const animationFrameRef = useRef(null);
   const lastTimeRef = useRef(Date.now());
@@ -116,25 +119,34 @@ const GameCanvas = () => {
   useEffect(() => {
     debug.log('씬 로드:', currentScene);
 
+    // 씬 전환 애니메이션 시작
+    setIsTransitioning(true);
+
     if (currentSceneData) {
       const newNoiseSources = currentSceneData.noiseSources || [];
       debug.log(`소음원 ${newNoiseSources.length}개 로드`);
 
-      gameState.updateEnvironment({
-        floor: currentSceneData.floor,
-        noiseLevel: currentSceneData.environment.noiseLevel,
-        lightIntensity: currentSceneData.environment.lightIntensity,
-        crowdDensity: currentSceneData.environment.crowdDensity,
-        noiseSources: newNoiseSources
-      });
+      // 짧은 지연 후 씬 데이터 로드 (페이드 효과)
+      setTimeout(() => {
+        gameState.updateEnvironment({
+          floor: currentSceneData.floor,
+          noiseLevel: currentSceneData.environment.noiseLevel,
+          lightIntensity: currentSceneData.environment.lightIntensity,
+          crowdDensity: currentSceneData.environment.crowdDensity,
+          noiseSources: newNoiseSources
+        });
 
-      // 씬의 viewpoint 설정 적용
-      if (currentSceneData.viewpoint && currentSceneData.viewpoint !== gameState.viewpoint) {
-        debug.log(`시점 전환: ${gameState.viewpoint} → ${currentSceneData.viewpoint}`);
-        gameState.switchViewpoint(currentSceneData.viewpoint);
-      }
+        // 씬의 viewpoint 설정 적용
+        if (currentSceneData.viewpoint && currentSceneData.viewpoint !== gameState.viewpoint) {
+          debug.log(`시점 전환: ${gameState.viewpoint} → ${currentSceneData.viewpoint}`);
+          gameState.switchViewpoint(currentSceneData.viewpoint);
+        }
 
-      setCurrentDialogueIndex(0);
+        setCurrentDialogueIndex(0);
+
+        // 전환 완료
+        setTimeout(() => setIsTransitioning(false), 300);
+      }, 300);
     }
   }, [currentScene]);
 
@@ -152,6 +164,14 @@ const GameCanvas = () => {
           setTimeout(() => {
             gameState.switchViewpoint(newViewpoint);
           }, 500);
+        }
+
+        // 크레딧 표시 (게임 종료)
+        if (currentSceneData.credits) {
+          setTimeout(() => {
+            setShowCredits(true);
+          }, 2000);
+          return;
         }
 
         // 대화가 끝나고 선택지가 없으면 자동으로 다음 씬으로
@@ -232,6 +252,9 @@ const GameCanvas = () => {
       data-viewpoint={gameState.viewpoint}
       data-special={currentSceneData?.environment?.special}
     >
+      {/* 씬 전환 오버레이 */}
+      {isTransitioning && <div className="scene-transition" />}
+
       {/* 바닥 층수 표시 */}
       <div className="floor-indicator">
         {currentSceneData?.floor}층
@@ -319,6 +342,9 @@ const GameCanvas = () => {
           {currentSceneData.title}
         </div>
       )}
+
+      {/* 크레딧 */}
+      {showCredits && <Credits finalMessage={currentSceneData?.finalMessage} />}
     </div>
   );
 };
