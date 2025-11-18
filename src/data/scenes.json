@@ -144,6 +144,205 @@
         }
       ]
     },
+    "nextScene": "2-1"
+  },
+  "2-1": {
+    "id": "2-1",
+    "chapter": 2,
+    "title": "엘리베이터 홀",
+    "floor": 15,
+    "viewpoint": "mother",
+    "backgroundMusic": "contemplative",
+    "environment": {
+      "noiseLevel": 40,
+      "lightIntensity": 70,
+      "crowdDensity": 20
+    },
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "별아, 조금만 더 가면 돼. 엄마가 있어.",
+        "type": "dialogue",
+        "emotion": "reassuring"
+      },
+      {
+        "speaker": "mother",
+        "text": "별이가 엄마 손을 꼭 쥐고 있어. 힘든가 봐...",
+        "type": "narration",
+        "emotion": "worried"
+      }
+    ],
+    "choices": [
+      {
+        "id": "take-elevator",
+        "text": "엘리베이터 타기",
+        "nextScene": "2-2"
+      },
+      {
+        "id": "take-stairs",
+        "text": "계단으로 가기",
+        "nextScene": "2-3"
+      }
+    ]
+  },
+  "2-2": {
+    "id": "2-2",
+    "chapter": 2,
+    "title": "엘리베이터 (빠른 루트)",
+    "floor": 45,
+    "viewpoint": "mother",
+    "backgroundMusic": "tension-rising",
+    "environment": {
+      "noiseLevel": 60,
+      "lightIntensity": 80,
+      "crowdDensity": 40
+    },
+    "noiseSources": [
+      {
+        "id": "crowd-noise",
+        "x": 400,
+        "y": 300,
+        "type": "사람들",
+        "intensity": 50,
+        "active": true
+      },
+      {
+        "id": "elevator-mechanism",
+        "x": 600,
+        "y": 250,
+        "type": "기계음",
+        "intensity": 40,
+        "active": true
+      }
+    ],
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "사람이 너무 많아. 별이가 힘들어하고 있어...",
+        "type": "narration",
+        "emotion": "anxious"
+      }
+    ],
+    "nextScene": "3-1"
+  },
+  "2-3": {
+    "id": "2-3",
+    "chapter": 2,
+    "title": "계단 (느린 루트)",
+    "floor": 25,
+    "viewpoint": "byeol",
+    "backgroundMusic": "quiet-moment",
+    "environment": {
+      "noiseLevel": 20,
+      "lightIntensity": 50,
+      "crowdDensity": 0
+    },
+    "patterns": [
+      {
+        "id": "pattern-2-3-stairs",
+        "x": 350,
+        "y": 280,
+        "type": "geometric",
+        "description": "계단의 반복되는 리듬"
+      }
+    ],
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "▓▓▓, ▒▓▓▒▓. ▒▓▓ ▓▓▒▓▓.",
+        "type": "distorted",
+        "originalEmotion": "gentle"
+      },
+      {
+        "speaker": "byeol",
+        "text": "조용해요. 좋아요.",
+        "type": "narration"
+      },
+      {
+        "speaker": "byeol",
+        "text": "엄마 손이 따뜻해요.",
+        "type": "narration"
+      }
+    ],
+    "viewpointSwitch": {
+      "to": "mother",
+      "afterDialogue": true
+    },
+    "nextScene": "3-1"
+  },
+  "3-1": {
+    "id": "3-1",
+    "chapter": 3,
+    "title": "중간 층 휴게실",
+    "floor": 60,
+    "viewpoint": "mother",
+    "backgroundMusic": "emotional-connection",
+    "environment": {
+      "noiseLevel": 30,
+      "lightIntensity": 65,
+      "crowdDensity": 10
+    },
+    "patterns": [
+      {
+        "id": "pattern-3-1-light",
+        "x": 500,
+        "y": 200,
+        "type": "wave",
+        "description": "창문으로 들어오는 빛의 패턴"
+      }
+    ],
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "여기서 잠깐 쉬어가자. 별아, 물 마실래?",
+        "type": "dialogue",
+        "emotion": "caring"
+      },
+      {
+        "speaker": "mother",
+        "text": "별이가 창밖을 보고 있어. 뭔가 보이는 걸까?",
+        "type": "narration",
+        "emotion": "curious"
+      }
+    ],
+    "nextScene": "3-2"
+  },
+  "3-2": {
+    "id": "3-2",
+    "chapter": 3,
+    "title": "마지막 오르막",
+    "floor": 90,
+    "viewpoint": "mother",
+    "backgroundMusic": "determination",
+    "environment": {
+      "noiseLevel": 45,
+      "lightIntensity": 55,
+      "crowdDensity": 15
+    },
+    "noiseSources": [
+      {
+        "id": "wind-noise",
+        "x": 300,
+        "y": 200,
+        "type": "바람",
+        "intensity": 45,
+        "active": true
+      }
+    ],
+    "dialogues": [
+      {
+        "speaker": "mother",
+        "text": "이제 거의 다 왔어. 조금만 더...",
+        "type": "narration",
+        "emotion": "exhausted-determined"
+      },
+      {
+        "speaker": "mother",
+        "text": "별아, 우리 해낼 수 있어. 엄마 믿어.",
+        "type": "dialogue",
+        "emotion": "encouraging"
+      }
+    ],
     "nextScene": "4-climax"
   },
   "4-climax": {
